@@ -1,7 +1,10 @@
+// splash.dart
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_dengue/home.dart'; // Import the home page
 import 'package:smart_dengue/login.dart'; // Import the login page
+//import 'package:smart_dengue/utils/auth_service.dart'; // Import authentication service
 
 import 'widgets/custom_scaffold.dart';
 
@@ -44,44 +47,11 @@ void initState() {
 }
 
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   print("Initializing Splash state...");
-  //   _navigate();
-  // }
-
-  // _navigate() async {
-  //   // Delay for a few seconds to simulate a splash screen
-  //   await Future.delayed(const Duration(seconds: 5));
-
-  //   // Check if the user is logged in
-  //   bool isLoggedIn = await AuthService().isLoggedIn();
-  //   print("Is logged in: $isLoggedIn");
-
-  //   // Navigate to the appropriate screen
-  //   Navigator.pushReplacement(
-  //     context,
-  //     MaterialPageRoute(
-  //       //builder: (context) => isLoggedIn ? const MyHomePage(title: 'Home') : LoginPage(),
-  //       builder: (context) => LoginPage(),
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       child: 
-      Column(
-        children: [
-          Flexible(
-            child: Container(
-              
-            ),
-          ),
-        ],
-      ),
+      Column(),
       
     );
   }
