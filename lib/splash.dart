@@ -35,7 +35,7 @@ void initState() {
     Future.delayed(const Duration(seconds: 5), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => token == null ? LoginPage() : MyHomePage(),
+          builder: (context) => token == null ? LoginPage() : LoginPage(),
         ),
       );
     });
