@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_dengue/home.dart'; // Import the home page
+import 'package:smart_dengue/nav.dart';
 import '../theme/theme.dart';
 import '../widgets/custom_scaffold.dart';
 
@@ -116,7 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               // Navigate to home page after saving profile
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => MyHomePage(),
+                                  builder: (context) => nav(),
                                 ),
                               );
                             });
