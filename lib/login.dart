@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_dengue/profile.dart';
 import '../theme/theme.dart';
 import '../widgets/custom_scaffold.dart';
+import 'dart:convert';
+// import 'package:http/http.dart' as http;
 
 
 class LoginPage extends StatefulWidget {
@@ -20,6 +22,37 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   String token = 'uTmDgwpXglJWEWTz7m0VBzniYfkQqw9M';//THIS IS A STATIC TOKEN FOR NOW     //USE THE DYNAMIC TOKEN FROM THE API OR OTHER BACKEND SEVICE TOKEN!!!
+  
+  // Future<void> loginUser(String username, String location) async {
+  //   final response = await http.post(
+  //     Uri.parse('http://localhost:5000/login'),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: jsonEncode(<String, String>{
+  //       'username': username,
+  //       'location': location,
+  //     }),
+  //   );
+  //   if (response.statusCode == 200) {
+  //     print('Logged in successfully');
+  //     // If login is successful, navigate to the home page
+  //     Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(
+  //         builder: (context) => ProfilePage(), // Replace ProfilePage with your home page
+  //       ),
+  //     );
+  //   } else {
+  //     print('Failed to login');
+  //     // Show an error message to the user
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('Failed to login'),
+  //       ),
+  //     );
+  //   }
+  // }
+  
   StoretheToken(String email, String password) async {
     try {
       final prefs = await SharedPreferences.getInstance();
