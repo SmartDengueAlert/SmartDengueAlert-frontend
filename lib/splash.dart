@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_dengue/home.dart'; // Import the home page
 import 'package:smart_dengue/login.dart'; // Import the login page
+import 'package:smart_dengue/nav.dart';
 //import 'package:smart_dengue/utils/auth_service.dart'; // Import authentication service
 
 import 'widgets/custom_scaffold.dart';
@@ -35,7 +36,7 @@ void initState() {
     Future.delayed(const Duration(seconds: 5), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => token == null ? LoginPage() : LoginPage(),
+          builder: (context) => token == null ? LoginPage() : nav(),
         ),
       );
     });
