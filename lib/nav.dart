@@ -4,9 +4,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_dengue/drawer.dart';
 import 'package:smart_dengue/home.dart';
 import 'package:smart_dengue/home_page.dart';
+import 'package:smart_dengue/info_page.dart';
 import 'package:smart_dengue/login.dart';
 import 'package:smart_dengue/profile.dart';
 import 'package:smart_dengue/search_page.dart';
+
 
 class nav extends StatefulWidget {
   @override
@@ -26,7 +28,7 @@ class _navState extends State<nav> {
     // ),
     MyHomePage(),
     Search(),
-    Text('Info'),
+    InfoPage(),
     ProfilePage(),
   ];
 
