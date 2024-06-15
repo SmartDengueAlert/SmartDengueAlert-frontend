@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smart_dengue/home.dart';
+//import 'package:smart_dengue/home.dart';
+import 'package:smart_dengue/profile.dart';
 import '../theme/theme.dart';
 import '../widgets/custom_scaffold.dart';
+import 'dart:convert';
+// import 'package:http/http.dart' as http;
 
 
 class LoginPage extends StatefulWidget {
@@ -19,9 +22,42 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   String token = 'uTmDgwpXglJWEWTz7m0VBzniYfkQqw9M';//THIS IS A STATIC TOKEN FOR NOW     //USE THE DYNAMIC TOKEN FROM THE API OR OTHER BACKEND SEVICE TOKEN!!!
-  StoretheToken() async {
+  
+  // Future<void> loginUser(String username, String location) async {
+  //   final response = await http.post(
+  //     Uri.parse('http://localhost:5000/login'),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: jsonEncode(<String, String>{
+  //       'username': username,
+  //       'location': location,
+  //     }),
+  //   );
+  //   if (response.statusCode == 200) {
+  //     print('Logged in successfully');
+  //     // If login is successful, navigate to the home page
+  //     Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(
+  //         builder: (context) => ProfilePage(), // Replace ProfilePage with your home page
+  //       ),
+  //     );
+  //   } else {
+  //     print('Failed to login');
+  //     // Show an error message to the user
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('Failed to login'),
+  //       ),
+  //     );
+  //   }
+  // }
+  
+  StoretheToken(String email, String password) async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('email', email);
+      await prefs.setString('password', password);
       await prefs.setString('token', token);
       // Optionally, you can log a message indicating successful storage
       print('Token stored successfully: $token');
@@ -214,10 +250,10 @@ class _LoginPageState extends State<LoginPage> {
                               );
 
                               // Store the token and navigate to the home page
-                              StoretheToken().then((_) {
+                              StoretheToken(email.text, password.text).then((_) {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (context) => const MyHomePage(),
+                                    builder: (context) => ProfilePage(),
                                   ),
                                 );
                               });
@@ -236,7 +272,7 @@ class _LoginPageState extends State<LoginPage> {
                             backgroundColor: Colors.teal,
                             foregroundColor: Colors.white,
                           ),
-                          child: const Text('Sign up'),
+                          child: Text('Sign up'),
                         ),
                       ),
                       const SizedBox(

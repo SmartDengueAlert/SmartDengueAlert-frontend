@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:smart_dengue/home.dart';
+// import 'package:smart_dengue/login.dart';
+// import 'package:smart_dengue/utils/auth_service.dart';
 import 'splash.dart';
 
 void main() {
@@ -19,4 +23,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

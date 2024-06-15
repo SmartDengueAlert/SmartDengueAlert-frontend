@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_dengue/drawer.dart';
+import 'package:smart_dengue/home.dart';
 import 'package:smart_dengue/home_page.dart';
+import 'package:smart_dengue/login.dart';
+import 'package:smart_dengue/profile.dart';
 import 'package:smart_dengue/search_page.dart';
 
 class nav extends StatefulWidget {
@@ -9,26 +14,99 @@ class nav extends StatefulWidget {
 }
 
 class _navState extends State<nav> {
+  removeToken()async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
-    Home(
-      location: '',
-      weatherData: '',
-    ),
+    // Home(
+    //   location: '',
+    //   weatherData: '',
+    // ),
+    MyHomePage(),
     Search(),
     Text('Info'),
-    Text('Profile'),
+    ProfilePage(),
   ];
+
+  // void goToHomePage(){
+  //   //go to home page
+  //   Navigator.push(
+  //     context, 
+  //     MaterialPageRoute(
+  //       builder: (context) => MyHomePage(),
+  //     ),
+  //   );
+  // }
 
   void _onItemTap(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    // Handle sign out when "Logout" is tapped
+    if (index == 4) {
+      index=0;
+      _selectedIndex = index;
+      //goToHomePage();
+      // Show confirmation dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Sign Out"),
+            content: Text("Are you sure you want to sign out?"),
+            actions: <Widget>[
+              TextButton(
+                child: Text("No"),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close dialog
+                  
+                },
+              ),
+              TextButton(
+                child: Text("Yes"),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close dialog
+                  signOut(); // Call signOut() function
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  // //navigate to profile page
+  // void goToProfilePage(){
+  //   //pop menu drawer
+  //   Navigator.pop(context);
+
+  //   //go to profile page
+  //   Navigator.push(
+  //     context, 
+  //     MaterialPageRoute(
+  //       builder: (context) => ProfilePage(),
+  //     ),
+  //   );
+  // }
+
+  // Function to sign out
+  Future<void> signOut() async {
+    // Remove token
+    await removeToken();
+    // Navigate to login page
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // drawer: MyDrawer(
+      //   //onProfileTap: goToProfilePage, 
+      //   onSignOut: signOut,
+      // ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -51,6 +129,10 @@ class _navState extends State<nav> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.logout),
+            label: 'SignOut',
           ),
         ],
         currentIndex: _selectedIndex,

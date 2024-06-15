@@ -32,37 +32,37 @@ class _SearchState extends State<Search> {
     });
   }
 
-  Future<void> fetchWeatherAndNavigate(
-      String location, BuildContext context) async {
-    try {
-      String weatherData = await fetchWeatherData(location);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              Home(location: location, weatherData: weatherData),
-        ),
-      );
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text(e.toString()),
-            actions: <Widget>[
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
+  // Future<void> fetchWeatherAndNavigate(
+  //     String location, BuildContext context) async {
+  //   try {
+  //     String weatherData = await fetchWeatherData(location);
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) =>
+  //             Home(location: location, weatherData: weatherData),
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return AlertDialog(
+  //           title: Text('Error'),
+  //           content: Text(e.toString()),
+  //           actions: <Widget>[
+  //             TextButton(
+  //               child: Text('OK'),
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //             ),
+  //           ],
+  //         );
+  //       },
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +113,8 @@ class _SearchState extends State<Search> {
                 child: ListView.builder(
                   itemCount: displayList.length,
                   itemBuilder: (context, index) => GestureDetector(
-                    onTap: () => fetchWeatherAndNavigate(
-                        displayList[index].location!, context),
+                    // onTap: () => fetchWeatherAndNavigate(
+                    //     displayList[index].location!, context),
                     child: Container(
                       margin: const EdgeInsets.all(5.0),
                       padding: const EdgeInsets.all(10.0),
