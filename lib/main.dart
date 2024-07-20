@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_dengue/info_page.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:smart_dengue/home.dart';
 // import 'package:smart_dengue/login.dart';
