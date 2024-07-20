@@ -3,6 +3,8 @@ import 'package:smart_dengue/home_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:smart_dengue/locations.dart';
+
 class Search extends StatefulWidget {
   const Search({super.key});
 
@@ -85,7 +87,7 @@ class _SearchState extends State<Search> {
               const Text(
                 'Search Your Location',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 18,
                 ),
               ),
@@ -145,11 +147,11 @@ class _SearchState extends State<Search> {
   }
 }
 
-class RequiredLocations {
-  final String? location;
+// class RequiredLocations {
+//   final String? location;
 
-  RequiredLocations(this.location);
-}
+//   RequiredLocations(this.location);
+// }
 
 Future<String> fetchWeatherData(String location) async {
   final response = await http.post(
