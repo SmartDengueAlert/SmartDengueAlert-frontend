@@ -1,78 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:smart_dengue/home.dart';
 import 'package:smart_dengue/profile.dart';
 import '../theme/theme.dart';
 import '../widgets/custom_scaffold.dart';
-import 'dart:convert';
-// import 'package:http/http.dart' as http;
-
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   final _formLoginKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   bool agreePersonalData = true;
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
-  String token = 'uTmDgwpXglJWEWTz7m0VBzniYfkQqw9M';//THIS IS A STATIC TOKEN FOR NOW     //USE THE DYNAMIC TOKEN FROM THE API OR OTHER BACKEND SEVICE TOKEN!!!
-  
-  // Future<void> loginUser(String username, String location) async {
-  //   final response = await http.post(
-  //     Uri.parse('http://localhost:5000/login'),
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: jsonEncode(<String, String>{
-  //       'username': username,
-  //       'location': location,
-  //     }),
-  //   );
-  //   if (response.statusCode == 200) {
-  //     print('Logged in successfully');
-  //     // If login is successful, navigate to the home page
-  //     Navigator.of(context).pushReplacement(
-  //       MaterialPageRoute(
-  //         builder: (context) => ProfilePage(), // Replace ProfilePage with your home page
-  //       ),
-  //     );
-  //   } else {
-  //     print('Failed to login');
-  //     // Show an error message to the user
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //         content: Text('Failed to login'),
-  //       ),
-  //     );
-  //   }
-  // }
-  
-  StoretheToken(String email, String password) async {
+  bool _passwordVisible = false;
+
+  Future<void> loginUser(String email, String password) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('email', email);
-      await prefs.setString('password', password);
-      await prefs.setString('token', token);
-      // Optionally, you can log a message indicating successful storage
-      print('Token stored successfully: $token');
+      final response = await http.post(
+        Uri.parse('http://localhost:3000/auth/login'), // Replace with the backend API URL for login //use pc ipv4 address as localhost
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, String>{
+          'email': email,
+          'password': password,
+        }),
+      );
+      if (response.statusCode == 200) {
+        // Login successful
+        final responseData = json.decode(response.body);
+        final token = responseData['token']; // Adjust this according to your API response
+
+        // Save the token in SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+        await prefs.setString('email', email);
+        print('Email saved: $email'); // Debugging print
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login successful'),
+          ),
+        );
+        // Handle navigation or other actions upon successful login
+        // Navigate to ProfilePage
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(),
+          ),
+        );
+      } else {
+        // Login failed
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to login...'),
+          ),
+        );
+      }
     } catch (e) {
-      // Handle any errors that occur during storage
-      print('Error storing token: $e');
-      // You can also throw the error to propagate it further if needed
-      throw e;
+      // Error occurred during login
+      print('Error logging in: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to login'),
+        ),
+      );
     }
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
+      // appBar: AppBar(
+      //   title: Text('Login'),
+      // ),
       child: Column(
         children: [
           const Expanded(
@@ -93,13 +103,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               child: SingleChildScrollView(
-                // get started form
                 child: Form(
                   key: _formLoginKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // get started text
                       const Text(
                         'Get Started',
                         style: TextStyle(
@@ -111,39 +119,9 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 35.0,
                       ),
-                      // full name
-                      // TextFormField(
-                      //   validator: (value) {
-                      //     if (value == null || value.isEmpty) {
-                      //       return 'Please enter Full name';
-                      //     }
-                      //     return null;
-                      //   },
-                      //   decoration: InputDecoration(
-                      //     label: const Text('Full Name'),
-                      //     hintText: 'Enter Full Name',
-                      //     hintStyle: const TextStyle(
-                      //       color: Colors.black26,
-                      //     ),
-                      //     border: OutlineInputBorder(
-                      //       borderSide: const BorderSide(
-                      //         color: Colors.black12, // Default border color
-                      //       ),
-                      //       borderRadius: BorderRadius.circular(10),
-                      //     ),
-                      //     enabledBorder: OutlineInputBorder(
-                      //       borderSide: const BorderSide(
-                      //         color: Colors.black12, // Default border color
-                      //       ),
-                      //       borderRadius: BorderRadius.circular(10),
-                      //     ),
-                      //   ),
-                      // ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      // email
                       TextFormField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
@@ -173,9 +151,9 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      // password
                       TextFormField(
-                        obscureText: true,
+                        controller: passwordController,
+                        obscureText: !_passwordVisible,
                         obscuringCharacter: '*',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -201,12 +179,23 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                          ),
                         ),
                       ),
                       const SizedBox(
                         height: 20.0,
                       ),
-                      // i agree to the processing
                       Row(
                         children: [
                           Checkbox(
@@ -216,7 +205,6 @@ class _LoginPageState extends State<LoginPage> {
                                 agreePersonalData = value!;
                               });
                             },
-                            activeColor: lightColorScheme.primary,
                           ),
                           const Text(
                             'I agree to the processing of ',
@@ -236,7 +224,6 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      //signup button
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
@@ -248,21 +235,13 @@ class _LoginPageState extends State<LoginPage> {
                                   content: Text('Processing Data'),
                                 ),
                               );
-
-                              // Store the token and navigate to the home page
-                              StoretheToken(email.text, password.text).then((_) {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => ProfilePage(),
-                                  ),
-                                );
-                              });
+                              loginUser(emailController.text.trim(), passwordController.text.trim());
                             } else {
                               // If the form is not valid or the user hasn't agreed to the terms
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    agreePersonalData? 'Please fill out all fields': 'Please agree to the processing of personal data',
+                                    agreePersonalData ? 'Please fill out all fields' : 'Please agree to the processing of personal data',
                                   ),
                                 ),
                               );
@@ -272,14 +251,12 @@ class _LoginPageState extends State<LoginPage> {
                             backgroundColor: Colors.teal,
                             foregroundColor: Colors.white,
                           ),
-                          child: Text('Sign up'),
+                          child: const Text('Sign up'),
                         ),
                       ),
                       const SizedBox(
                         height: 25.0,
                       ),
-
-                      // sign up divider
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -325,38 +302,6 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      // already have an account
-                      // const Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     Text(
-                      //       'Already have an account? ',
-                      //       style: TextStyle(
-                      //         color: Colors.black45,
-                      //       ),
-                      //     ),
-                      //     // GestureDetector(
-                      //     //   onTap: () {
-                      //     //     Navigator.push(
-                      //     //       context,
-                      //     //       MaterialPageRoute(
-                      //     //         builder: (e) => const SignInScreen(),
-                      //     //       ),
-                      //     //     );
-                      //     //   },
-                      //     //   child: Text(
-                      //     //     'Sign in',
-                      //     //     style: TextStyle(
-                      //     //       fontWeight: FontWeight.bold,
-                      //     //       color: lightColorScheme.primary,
-                      //     //     ),
-                      //     //   ),
-                      //     // ),
-                      //   ],
-                      // ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
                     ],
                   ),
                 ),
@@ -368,101 +313,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:smart_dengue/utils/auth_service.dart'; // Import authentication service
-// import 'package:smart_dengue/home.dart'; // Import the home page
-
-// class LoginPage extends StatelessWidget {
-//   const LoginPage({Key? key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Login'),
-//         // Customize the app bar color and text style here
-//         backgroundColor: Colors.blue, // Example color
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             // Add your logo or image here
-//             // Example: Image.asset('assets/logo.png', height: 100),
-//             ElevatedButton(
-//               onPressed: () async {
-//                 // Perform login
-//                 bool isLoggedIn = await AuthService().login();
-//                 if (isLoggedIn) {
-//                   print("Is logged in 3: $isLoggedIn");
-//                   // If login is successful, navigate to the home page
-//                   Navigator.pushReplacement(
-//                     context,
-//                     MaterialPageRoute(builder: (context) => const MyHomePage(title: 'GFG')),
-//                   );
-//                 }
-//               },
-//               style: ElevatedButton.styleFrom(
-//                 //primary: Colors.blue, // Button background color
-//                 //onPrimary: Colors.white, // Text color
-//                 textStyle: const TextStyle(fontSize: 18), // Text style
-//                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Button padding
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(8), // Button border radius
-//                 ),
-//               ),
-//               child: const Text('Login'),
-//             ),
-//             // Add other widgets (e.g., text fields, forgot password link) here
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

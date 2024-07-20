@@ -56,8 +56,8 @@ class _navState extends State<nav> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Sign Out"),
-            content: Text("Are you sure you want to sign out?"),
+            title: Text("LogOut"),
+            content: Text("Are you sure you want to logout?"),
             actions: <Widget>[
               TextButton(
                 child: Text("No"),
@@ -70,7 +70,7 @@ class _navState extends State<nav> {
                 child: Text("Yes"),
                 onPressed: () {
                   Navigator.of(context).pop(); // Close dialog
-                  signOut(); // Call signOut() function
+                  logout(); // Call signOut() function
                 },
               ),
             ],
@@ -95,7 +95,7 @@ class _navState extends State<nav> {
   // }
 
   // Function to sign out
-  Future<void> signOut() async {
+  Future<void> logout() async {
     // Remove token
     await removeToken();
     // Navigate to login page
@@ -134,7 +134,7 @@ class _navState extends State<nav> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.logout),
-            label: 'SignOut',
+            label: 'LogOut',
           ),
         ],
         currentIndex: _selectedIndex,

@@ -51,9 +51,9 @@ void initState() {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      child: 
-      Column(),
-      
+      child: Center(
+        child: CircularProgressIndicator(), // Show loading indicator while retrieving token
+      ),
     );
   }
 }
