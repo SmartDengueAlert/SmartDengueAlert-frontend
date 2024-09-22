@@ -62,6 +62,8 @@ SmartDengue Alert is a mobile application designed to predict and prevent Dengue
      ```bash
      flutter run
      ```
+** NEED TO REPLACE ALL 'localhost' IN URLS WITH THE IP ADDRESS OF THE BACKEND SERVER
+
 
 ## Usage
 
