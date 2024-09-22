@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'chatbot_page.dart';
 
 class InfoPage extends StatefulWidget {
   const InfoPage({super.key});
@@ -45,6 +46,7 @@ class _InfoPageState extends State<InfoPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 20), // Add space between sections
                 SectionTitle(title: 'How Does Dengue Spread?'),
                 SectionContent(
                   text: [
@@ -52,28 +54,28 @@ class _InfoPageState extends State<InfoPage> {
                       text: 'Dengue is primarily spread through the bite of an infected Aedes mosquito. Here’s how the transmission cycle works:',
                     ),
                     TextSpan(
-                      text: '\n● Mosquito Bite: ',
+                      text: '\n\n● Mosquito Bite: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
                       text: 'A mosquito bites a person infected with the dengue virus.',
                     ),
                     TextSpan(
-                      text: '\n● Virus Transmission: ',
+                      text: '\n\n● Virus Transmission: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
                       text: 'The mosquito becomes infected with the virus.',
                     ),
                     TextSpan(
-                      text: '\n● Subsequent Bites: ',
+                      text: '\n\n● Subsequent Bites: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
                       text: 'The infected mosquito bites another person, transmitting the virus to them.',
                     ),
                     TextSpan(
-                      text: '\n● Human-to-Mosquito: ',
+                      text: '\n\n● Human-to-Mosquito: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
@@ -81,6 +83,7 @@ class _InfoPageState extends State<InfoPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 20),
                 SectionTitle(title: 'Symptoms of Dengue'),
                 SectionContent(
                   text: [
@@ -88,36 +91,37 @@ class _InfoPageState extends State<InfoPage> {
                       text: 'Common symptoms of dengue include:',
                     ),
                     TextSpan(
-                      text: '\n● High fever',
+                      text: '\n\n● High fever',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: '\n● Severe headache',
+                      text: '\n\n● Severe headache',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: '\n● Pain behind the eyes',
+                      text: '\n\n● Pain behind the eyes',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: '\n● Joint and muscle pain',
+                      text: '\n\n● Joint and muscle pain',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: '\n● Nausea and vomiting',
+                      text: '\n\n● Nausea and vomiting',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: '\n● Skin rash',
+                      text: '\n\n● Skin rash',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: '\n● Mild bleeding (such as nosebleeds or easy bruising)',
+                      text: '\n\n● Mild bleeding (such as nosebleeds or easy bruising)',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                   image: 'assets/images/fever-symptoms.jpg',
                 ),
+                SizedBox(height: 20),
                 SectionTitle(title: 'How to Prevent the Spread of Dengue'),
                 SectionContent(
                   text: [
@@ -125,35 +129,35 @@ class _InfoPageState extends State<InfoPage> {
                       text: 'To protect yourself and prevent the spread of dengue, follow these tips:',
                     ),
                     TextSpan(
-                      text: '\n● Use Mosquito Repellent: ',
+                      text: '\n\n● Use Mosquito Repellent: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
                       text: 'Apply repellent on exposed skin and clothing.',
                     ),
                     TextSpan(
-                      text: '\n● Wear Protective Clothing: ',
+                      text: '\n\n● Wear Protective Clothing: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
                       text: 'Wear long-sleeved shirts, long pants, socks, and shoes when outdoors.',
                     ),
                     TextSpan(
-                      text: '\n● Eliminate Standing Water: ',
+                      text: '\n\n● Eliminate Standing Water: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
                       text: 'Remove or cover containers that can hold water to reduce mosquito breeding sites.',
                     ),
                     TextSpan(
-                      text: '\n● Use Mosquito Nets: ',
+                      text: '\n\n● Use Mosquito Nets: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
                       text: 'Sleep under mosquito nets, especially in areas where dengue is common.',
                     ),
                     TextSpan(
-                      text: '\n● Keep Mosquitoes Out: ',
+                      text: '\n\n● Keep Mosquitoes Out: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
@@ -162,6 +166,7 @@ class _InfoPageState extends State<InfoPage> {
                   ],
                   image: 'assets/images/dengue_prevent.jpg',
                 ),
+                SizedBox(height: 20),
                 SectionTitle(title: 'How Does the App Work?'),
                 SectionContent(
                   text: [
@@ -169,23 +174,24 @@ class _InfoPageState extends State<InfoPage> {
                       text: 'Our dengue prediction app uses machine learning algorithms to analyze various factors that contribute to the spread of dengue fever, including:',
                     ),
                     TextSpan(
-                      text: '\n● Weather Patterns',
+                      text: '\n\n● Weather Patterns',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: '\n● Mosquito Breeding Habits',
+                      text: '\n\n● Mosquito Breeding Habits',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: '\n● Population Density',
+                      text: '\n\n● Population Density',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: '\n● Historical Dengue Outbreak Data',
+                      text: '\n\n● Historical Dengue Outbreak Data',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
+                SizedBox(height: 20),
                 SectionTitle(title: 'Features'),
                 SectionContent(
                   text: [
@@ -197,21 +203,21 @@ class _InfoPageState extends State<InfoPage> {
                       text: 'Get a personalized risk score based on your location and other factors.',
                     ),
                     TextSpan(
-                      text: '\n● Real-time Updates: ',
+                      text: '\n\n● Real-time Updates: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
                       text: 'Stay informed about dengue outbreaks and weather conditions in your area.',
                     ),
                     TextSpan(
-                      text: '\n● Prevention Tips: ',
+                      text: '\n\n● Prevention Tips: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
                       text: 'Get expert advice on how to prevent dengue fever, including mosquito repellent recommendations and more.',
                     ),
                     TextSpan(
-                      text: '\n● Symptom Checker: ',
+                      text: '\n\n● Symptom Checker: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
@@ -219,6 +225,7 @@ class _InfoPageState extends State<InfoPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 20),
                 SectionTitle(title: 'How to Use the App'),
                 SectionContent(
                   text: [
@@ -227,24 +234,24 @@ class _InfoPageState extends State<InfoPage> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: 'Grant the app permission to access your location to get accurate risk scores and updates.',
+                      text: 'Grant the app permission to access your location to get accurate risks and updates.',
                     ),
                     TextSpan(
-                      text: '\n2. Enter Your Location: ',
+                      text: '\n\n2. Enter Your Location: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
                       text: 'Input your city or zip code to get started.',
                     ),
                     TextSpan(
-                      text: '\n3. View Your Risk Score: ',
+                      text: '\n\n3. View Your Risk : ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: 'Check your personalized risk score and take necessary precautions.',
+                      text: 'Check your personalized risk and take necessary precautions.',
                     ),
                     TextSpan(
-                      text: '\n4. Stay Informed: ',
+                      text: '\n\n4. Stay Informed: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
@@ -252,6 +259,7 @@ class _InfoPageState extends State<InfoPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 20),
                 SectionTitle(title: 'Why Use Our App?'),
                 SectionContent(
                   text: [
@@ -263,33 +271,38 @@ class _InfoPageState extends State<InfoPage> {
                       text: 'Get early warnings and take proactive measures to protect yourself and your loved ones.',
                     ),
                     TextSpan(
-                      text: '\n● Make informed decisions: ',
+                      text: '\n\n● Personalized risk assessment: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: 'Use our app to plan your daily activities, travel, and outdoor events with confidence.',
+                      text: 'Receive a risk score based on your specific location and circumstances.',
                     ),
                     TextSpan(
-                      text: '\n● Contribute to a safer community: ',
+                      text: '\n\n● Expert advice at your fingertips: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: 'By using our app, you\'re helping us collect valuable data to improve dengue prediction and prevention efforts.',
+                      text: 'Access prevention tips and guidance from experts in public health and mosquito control.',
                     ),
                   ],
-                ),
-                // Add this section to include the image at the end of the page
-                SectionContent(
-                  text: [
-                    TextSpan(
-                      text: '', // Empty text span
-                    ),
-                  ],
-                  image: 'assets/images/dengue.jpg', // Path to your end image
                 ),
               ],
             ),
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ChatbotPage()),
+          );
+        },
+        backgroundColor: Colors.blue, // Set your desired color
+        child: Image.asset(
+          'assets/images/chatbot.jpg', // Replace Icon with Image
+          height: 40, // Adjust size as needed
+          width: 40,
         ),
       ),
     );
@@ -299,20 +312,17 @@ class _InfoPageState extends State<InfoPage> {
 class SectionTitle extends StatelessWidget {
   final String title;
 
-  const SectionTitle({super.key, required this.title});
+  const SectionTitle({required this.title, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         title,
         style: const TextStyle(
-          fontSize: 24,
+          fontSize: 24.0,
           fontWeight: FontWeight.bold,
-          color: Colors.black,
-          fontFamily: 'Merriweather', // Change font family
-          letterSpacing: 1.0,  // Adjust letter spacing
         ),
       ),
     );
@@ -323,38 +333,28 @@ class SectionContent extends StatelessWidget {
   final List<TextSpan> text;
   final String? image;
 
-  const SectionContent({super.key, required this.text, this.image});
+  const SectionContent({required this.text, this.image, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (image != null) Image.asset(image!, fit: BoxFit.cover),
-          const SizedBox(height: 8),
-          RichText(
-            text: TextSpan(
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black,
-                fontFamily: 'Roboto', // Change font family
-              ),
-              children: _addSpacingBetweenSentences(text),
-            ),
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (image != null) ...[
+          Image.asset(image!),
+          const SizedBox(height: 10),
         ],
-      ),
+        RichText(
+          text: TextSpan(
+            style: const TextStyle(
+              fontSize: 16.0,
+              color: Colors.black,
+              height: 1.5, // Adjust line height for readability
+            ),
+            children: text,
+          ),
+        ),
+      ],
     );
-  }
-
-  List<InlineSpan> _addSpacingBetweenSentences(List<TextSpan> textSpans) {
-    List<InlineSpan> spacedTextSpans = [];
-    for (var span in textSpans) {
-      spacedTextSpans.add(span);
-      spacedTextSpans.add(const WidgetSpan(child: SizedBox(height: 8)));
-    }
-    return spacedTextSpans;
   }
 }
