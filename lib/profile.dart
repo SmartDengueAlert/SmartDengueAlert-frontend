@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_dengue/locations.dart';
 import 'package:smart_dengue/nav.dart';
+import 'package:smart_dengue/prediction.dart';
 import '../widgets/custom_scaffold.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -60,6 +61,15 @@ class _ProfilePageState extends State<ProfilePage> {
       await prefs.setString('name', nameController.text);
       await prefs.setString('location', locationController.text);
       await prefs.setString('email', emailController.text);
+
+      // Get the location from the controller and fetch the prediction
+      final location = locationController.text;
+      final prediction = await getPrediction(location);
+
+      // Save the prediction to SharedPreferences
+      await prefs.setString('prediction', prediction);
+
+      print('Profile saved with prediction: $prediction');
     } catch (e) {
       // Handle errors saving profile data
       print('Error saving profile: $e');
