@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smart_dengue/locations.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -12,16 +12,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _message = 'Loading...'; // Initial message state
-  String _userName = 'User'; // Initial user name state
-  String _location = ''; // Initial location state
-  List<String> _warnings = []; // List to store warnings
+  String _message = 'Loading...';
+  String _userName = 'User';
+  String _location = '';
+  double _predictionValue = 0.0;
+  String _warningLevel = 'No danger';
+  String _weatherInfo = '';
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    fetchData(); // Fetch data when the widget initializes
-    loadUserProfile(); // Load user name and location from SharedPreferences
+    fetchData();
+    loadUserProfile();
+    _startAutoRefresh(); // Start the auto-refresh timer
   }
 
   Future<void> loadUserProfile() async {
@@ -31,61 +35,125 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _userName = name;
       _location = location;
-      // fetchWarnings(location); // Commenting out the backend call for now
-      // Placeholder warning message
-      _warnings = location.isNotEmpty
-          ? ['No warnings for $location']
-          : [];
+      fetchPrediction(location); // Fetch prediction based on location
+      fetchWeather(location); // Fetch weather data based on location
     });
   }
 
   Future<void> fetchData() async {
     try {
-      final response = await http.get(Uri.parse('http:/localhost:3000/api/data')); // Replace with the API endpoint //use pc ipv4 address as localhost
+      final response = await http.get(Uri.parse('http://localhost:3000/api/data'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
-          _message = data['message']; // Update message state with API response
+          _message = data['message'];
         });
       } else {
         setState(() {
-          _message = 'Failed to load data'; // Handle error case
+          _message = 'Failed to load data';
         });
       }
     } catch (e) {
       setState(() {
-        _message = 'Error: $e'; // Handle network or other errors
+        _message = 'Error: $e';
       });
     }
   }
 
-  // Commenting out the backend call for now
-  // Future<void> fetchWarnings(String location) async {
-  //   if (location.isNotEmpty) {
-  //     try {
-  //       final response = await http.get(Uri.parse('http://localhost:3000/api/warnings?location=$location')); // Replace with the actual endpoint  //use pc ipv4 address as localhost
-  //       if (response.statusCode == 200) {
-  //         final data = json.decode(response.body);
-  //         final warnings = List<String>.from(data['warnings']);
-  //         setState(() {
-  //           _warnings = warnings.isNotEmpty ? warnings : ['There are no warnings for $location'];
-  //         });
-  //       } else {
-  //         setState(() {
-  //           _warnings = ['Failed to load warnings for $location'];
-  //         });
-  //       }
-  //     } catch (e) {
-  //       setState(() {
-  //         _warnings = ['Error: $e'];
-  //       });
-  //     }
-  //   } else {
-  //     setState(() {
-  //       _warnings = [];
-  //     });
-  //   }
-  // }
+  // Fetch prediction from the backend
+  Future<void> fetchPrediction(String location) async {
+    if (location.isNotEmpty) {
+      try {
+        final response = await http.post(
+          Uri.parse('http://localhost.1:3000/predictions/getPrediction?location=$location'),
+        );
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          final prediction = data['prediction']['Dengue Prediction'];
+          setState(() {
+            _predictionValue = prediction;
+            _updateWarningLevel();
+          });
+        } else {
+          setState(() {
+            _warningLevel = 'Failed to get prediction';
+          });
+        }
+      } catch (e) {
+        setState(() {
+          _warningLevel = 'Error: $e';
+        });
+      }
+    } else {
+      setState(() {
+        _warningLevel = 'No location selected';
+      });
+    }
+  }
+
+  // Update the warning level based on the prediction value
+  void _updateWarningLevel() {
+    if (_predictionValue > 20) {
+      _warningLevel = 'Danger';
+    } else if (_predictionValue >= 10) {
+      _warningLevel = 'Mid Danger';
+    } else {
+      _warningLevel = 'No Danger';
+    }
+  }
+
+  Future<void> fetchWeather(String location) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://localhost:3000/weather/fetch-current'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'location': location}),
+      );
+
+      if (response.statusCode == 200) {
+        final weatherData = jsonDecode(response.body)['data']; // Accessing the 'data' field
+
+        setState(() {
+          _weatherInfo =
+              'Temperature: ${weatherData['temperature']} °C\n'
+              'Humidity: ${weatherData['humidity']} %\n'
+              'Rainfall: ${weatherData['rainfall']} mm\n'
+              'Weather: ${weatherData['weatherDescription']}\n'
+              'Wind Speed: ${weatherData['windSpeed']} m/s';
+        });
+      } else {
+        print('Error fetching weather data: ${response.statusCode}'); // Log error
+        setState(() {
+          _weatherInfo = 'Error fetching weather data: ${response.statusCode}';
+        });
+      }
+    } catch (e) {
+      print('Exception in fetchWeather: $e'); // Log exception
+      setState(() {
+        _weatherInfo = 'Exception in fetchWeather: $e';
+      });
+    }
+  }
+
+  // Refresh every 3 hours
+  void _startAutoRefresh() {
+    _timer = Timer.periodic(const Duration(hours: 3), (Timer timer) {
+      fetchPrediction(_location); // Fetch prediction automatically
+      fetchWeather(_location); // Fetch weather data automatically
+    });
+  }
+
+  // Manually refresh warnings and weather
+  void _refreshWarnings() {
+    fetchPrediction(_location); // Manually fetch prediction
+    fetchWeather(_location); // Manually fetch weather
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,29 +197,55 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  if (_warnings.isEmpty)
-                    Text(
-                      'No location selected',
-                      style: TextStyle(fontSize: 18),
-                      textAlign: TextAlign.center,
-                    )
-                  else
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: _warnings.map((warning) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Text(
-                          warning,
+                  Text(
+                    _warningLevel,
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: _warningLevel == 'Danger'
+                          ? Colors.red
+                          : (_warningLevel == 'Mid Danger' ? Colors.orange : Colors.green),
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _refreshWarnings,
+                    child: const Text(
+                      'Refresh Warnings',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 20, 207, 142),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Weather Data Box
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    margin: const EdgeInsets.only(top: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Current Weather:',
                           style: TextStyle(
-                            fontSize: 22,
-                            color: Colors.red,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
-                          textAlign: TextAlign.center,
                         ),
-                      )).toList(),
+                        const SizedBox(height: 10),
+                        Text(
+                          _weatherInfo.isEmpty ? 'No weather data available' : _weatherInfo,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
                     ),
+                  ),
                 ],
               ),
             ),
