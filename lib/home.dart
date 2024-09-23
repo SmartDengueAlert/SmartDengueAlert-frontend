@@ -160,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Hi $_userName'),
-        backgroundColor: Color.fromARGB(255, 20, 207, 142),
+        backgroundColor: const Color.fromARGB(255, 20, 207, 142),
       ),
       body: Stack(
         children: [
@@ -177,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
             left: 15,
             right: 15,
             child: Container(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               width: 360,
               height: 400,
               alignment: Alignment.center,
@@ -185,68 +185,70 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.white.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(25.0),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Warnings for $_location',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
+              child: SingleChildScrollView( // Wrap Column in SingleChildScrollView
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Warnings for $_location',
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    _warningLevel,
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: _warningLevel == 'Danger'
-                          ? Colors.red
-                          : (_warningLevel == 'Mid Danger' ? Colors.orange : Colors.green),
-                      fontWeight: FontWeight.bold,
+                    const SizedBox(height: 10),
+                    Text(
+                      _warningLevel,
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: _warningLevel == 'Danger'
+                            ? Colors.red
+                            : (_warningLevel == 'Mid Danger' ? Colors.orange : Colors.green),
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _refreshWarnings,
-                    child: const Text(
-                      'Refresh Warnings',
-                      style: TextStyle(color: Colors.black),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _refreshWarnings,
+                      child: const Text(
+                        'Refresh Warnings',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 20, 207, 142),
+                      ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 20, 207, 142),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  // Weather Data Box
-                  Container(
-                    padding: EdgeInsets.all(10.0),
-                    margin: const EdgeInsets.only(top: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.6),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Current Weather:',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                    const SizedBox(height: 20),
+                    // Weather Data Box
+                    Container(
+                      padding: const EdgeInsets.all(10.0),
+                      margin: const EdgeInsets.only(top: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Current Weather:',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          _weatherInfo.isEmpty ? 'No weather data available' : _weatherInfo,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
+                          const SizedBox(height: 10),
+                          Text(
+                            _weatherInfo.isEmpty ? 'No weather data available' : _weatherInfo,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
